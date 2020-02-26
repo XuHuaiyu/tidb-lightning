@@ -37,4 +37,10 @@ check_contains 'id: 3'
 run_sql 'SELECT id FROM csv.empty_strings WHERE b <> ""'
 check_not_contains 'id:'
 
+run_sql "select count(*), max(a), hex(b), hex(c), max(d) from csv.large_csv_file"
+check_contains 'count(*): 84'
+check_contains ''
+check_contains ''
+check_contains ''
+
 done

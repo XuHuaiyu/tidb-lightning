@@ -20,6 +20,8 @@ not-null = false
 null = '\N'
 backslash-escape = true
 trim-last-separator = false
+strict-format = true
+max-region-size=2048
 
 [tidb]
 host = "127.0.0.1"

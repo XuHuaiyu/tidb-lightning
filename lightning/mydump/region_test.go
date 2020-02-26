@@ -21,6 +21,8 @@ import (
 	. "github.com/pingcap/check"
 	"github.com/pingcap/tidb-lightning/lightning/config"
 	. "github.com/pingcap/tidb-lightning/lightning/mydump"
+	"github.com/pingcap/tidb-lightning/lightning/worker"
+	"context"
 )
 
 var _ = Suite(&testMydumpRegionSuite{})
@@ -60,8 +62,9 @@ func (s *testMydumpRegionSuite) TestTableRegion(c *C) {
 	loader, _ := NewMyDumpLoader(cfg)
 	dbMeta := loader.GetDatabases()[0]
 
+	ioWorkers := worker.NewPool(context.Background(), 1, "io")
 	for _, meta := range dbMeta.Tables {
-		regions, err := MakeTableRegions(meta, 1, 1, 0, 1)
+		regions, err := MakeTableRegions(meta, 1, cfg, ioWorkers)
 		c.Assert(err, IsNil)
 
 		table := meta.Name
